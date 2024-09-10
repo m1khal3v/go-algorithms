@@ -3,7 +3,6 @@ package quick_sort
 import (
 	"cmp"
 	"math/rand/v2"
-	"sync"
 )
 
 type SortFunction[T cmp.Ordered] func(first, second T) bool
@@ -34,15 +33,6 @@ func quickSort[T cmp.Ordered](items []T, low, high int, sort SortFunction[T]) {
 	// move pivot after last smaller item
 	items[low], items[high] = items[high], items[low]
 
-	var wg sync.WaitGroup
-	wg.Add(2)
-	go func() {
-		defer wg.Done()
-		quickSort(items, 0, low-1, sort)
-	}()
-	go func() {
-		defer wg.Done()
-		quickSort(items, low+1, high, sort)
-	}()
-	wg.Wait()
+	quickSort(items, 0, low-1, sort)
+	quickSort(items, low+1, high, sort)
 }
