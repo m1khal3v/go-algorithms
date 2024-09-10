@@ -19,9 +19,16 @@ func Sort[T cmp.Ordered](items []T, sort SortFunction[T]) []T {
 
 func sortAndMerge[T cmp.Ordered](left, right []T, sort SortFunction[T]) []T {
 	leftLength, rightLength := len(left), len(right)
-	leftIndex, rightIndex := 0, 0
-	result := make([]T, 0, leftLength+rightLength)
 
+	result := make([]T, 0, leftLength+rightLength)
+	if sort(left[leftLength-1], right[0]) {
+		result = append(result, left...)
+		result = append(result, right...)
+
+		return result
+	}
+
+	leftIndex, rightIndex := 0, 0
 	for leftIndex < leftLength && rightIndex < rightLength {
 		if sort(left[leftIndex], right[rightIndex]) {
 			result = append(result, left[leftIndex])
