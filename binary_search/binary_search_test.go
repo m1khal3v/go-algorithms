@@ -11,7 +11,6 @@ import (
 func TestFind(t *testing.T) {
 	items := rand.Perm(1024)
 	slices.Sort(items)
-	items = slices.Compact(items)
 
 	index := rand.IntN(len(items))
 	target := items[index]

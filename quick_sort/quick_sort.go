@@ -17,6 +17,8 @@ func quickSort[T cmp.Ordered](items []T, low, high int, sort SortFunction[T]) {
 		return
 	}
 
+	mid := low
+
 	// choose random pivot and move it to the end
 	pivotIndex := rand.IntN(length) + low
 	pivot := items[pivotIndex]
@@ -25,14 +27,16 @@ func quickSort[T cmp.Ordered](items []T, low, high int, sort SortFunction[T]) {
 	// move elements less than pivot to the left
 	for index := low; index < high; index++ {
 		if sort(items[index], pivot) {
-			items[index], items[low] = items[low], items[index]
-			low++
+			items[index], items[mid] = items[mid], items[index]
+			mid++
 		}
 	}
 
 	// move pivot after last smaller item
-	items[low], items[high] = items[high], items[low]
+	items[mid], items[high] = items[high], items[mid]
 
-	quickSort(items, 0, low-1, sort)
-	quickSort(items, low+1, high, sort)
+	quickSort(items, low, mid-1, sort)
+	quickSort(items, mid+1, high, sort)
+
+	return
 }
