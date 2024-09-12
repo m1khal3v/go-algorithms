@@ -12,8 +12,16 @@ func Sort[T cmp.Ordered](items []T, sort SortFunction[T]) {
 }
 
 func quickSort[T cmp.Ordered](items []T, low, high int, sort SortFunction[T]) {
+	const minLength = 20
+
 	length := high - low + 1
 	if length < 2 {
+		return
+	}
+
+	// if the slice is small, then insertion sort is used as an optimization
+	if length < minLength {
+		insertionSort(items, low, high, sort)
 		return
 	}
 
@@ -39,4 +47,12 @@ func quickSort[T cmp.Ordered](items []T, low, high int, sort SortFunction[T]) {
 	quickSort(items, mid+1, high, sort)
 
 	return
+}
+
+func insertionSort[T cmp.Ordered](items []T, low, high int, sort SortFunction[T]) {
+	for i := low; i <= high; i++ {
+		for j := i; j > low && sort(items[j], items[j-1]); j-- {
+			items[j], items[j-1] = items[j-1], items[j]
+		}
+	}
 }
