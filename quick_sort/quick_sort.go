@@ -50,7 +50,7 @@ func quickSort[T cmp.Ordered](items []T, low, high int, sort SortFunction[T]) {
 }
 
 func insertionSort[T cmp.Ordered](items []T, low, high int, sort SortFunction[T]) {
-	for i := low; i <= high; i++ {
+	for i := low + 1; i <= high; i++ {
 		for j := i; j > low && sort(items[j], items[j-1]); j-- {
 			items[j], items[j-1] = items[j-1], items[j]
 		}
