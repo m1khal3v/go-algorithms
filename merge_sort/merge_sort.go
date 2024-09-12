@@ -22,10 +22,7 @@ func sortAndMerge[T cmp.Ordered](left, right []T, sort SortFunction[T]) []T {
 
 	result := make([]T, 0, leftLength+rightLength)
 	if sort(left[leftLength-1], right[0]) {
-		result = append(result, left...)
-		result = append(result, right...)
-
-		return result
+		return append(append(result, left...), right...)
 	}
 
 	leftIndex, rightIndex := 0, 0

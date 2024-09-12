@@ -15,7 +15,7 @@ func mergeSort[T cmp.Ordered](items []T, low, high int, sort SortFunction[T]) {
 		return
 	}
 
-	mid := (high-low)/2 + low
+	mid := ((high - low) / 2) + low
 
 	mergeSort(items, low, mid, sort)
 	mergeSort(items, mid+1, high, sort)
@@ -30,10 +30,8 @@ func sortAndMerge[T cmp.Ordered](items []T, low, mid, high int, sort SortFunctio
 		return
 	}
 
-	for low <= mid && lowSecond <= high {
-		if sort(items[low], items[lowSecond]) {
-			low++
-		} else {
+	for low < lowSecond && lowSecond <= high {
+		if !sort(items[low], items[lowSecond]) {
 			lowSecondValue := items[lowSecond]
 
 			for index := lowSecond; index != low; index-- {
@@ -41,10 +39,9 @@ func sortAndMerge[T cmp.Ordered](items []T, low, mid, high int, sort SortFunctio
 			}
 
 			items[low] = lowSecondValue
-
-			low++
 			lowSecond++
-			mid++
 		}
+
+		low++
 	}
 }
